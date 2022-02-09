@@ -11,12 +11,15 @@ use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Permission\Traits\HasRoles;
+
 class User extends Authenticatable implements JWTSubject
 {
-    Use SoftDeletes, Notifiable, HasFactory, Notifiable,hasRoles;
+    Use SoftDeletes, Notifiable, HasFactory, Notifiable,HasRoles;
    
     public $incrementing = false;
     protected $keyType = 'uuid';
+    protected $appends=['role'];
+    protected $with=['roles'];
 
 
     /**
@@ -39,6 +42,11 @@ class User extends Authenticatable implements JWTSubject
     protected $hidden = [
         'password',
         'remember_token',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        'rol_id'
+
     ];
 
     /**
@@ -79,6 +87,9 @@ class User extends Authenticatable implements JWTSubject
     }
 
 
+    public function getRoleAttribute(){
+        return $this->roles[0]->name;
+    }
     public function saveToken($token){
 
         $jwt= Token::decode($token);
@@ -95,5 +106,12 @@ class User extends Authenticatable implements JWTSubject
         ]);
         $this->tokens()->create($tokenData);
 
+    }
+
+
+  
+
+    public function answersInterviewed(){
+        return $this->belonsTo(App\Models\Answer::class,'id','interviewed_by');
     }
 }

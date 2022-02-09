@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\{User,SendMail};
 use Illuminate\Http\Request;
 use DB;
 class AuthController extends Controller
@@ -19,11 +19,11 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'rol_id' => '12312'
+            'password' => bcrypt($data['password'])
         ]);
 
-        $user->assignRole('inversionista');
+        $user = User::where('email',$data['email'])->first();
+        $user->assignRole('senior');
         return ok('usuario creado correctamente',$user);
     }
 
@@ -91,5 +91,64 @@ class AuthController extends Controller
 
     public function check(Request $request){
         return ok('',$request->user);
+    }
+
+    public function recoverPassword(Request $request){
+        $data = $request->validate([
+            'email'=>'required|email'
+        ]);
+
+        $user = User::whereEmail($data['email'])->first()??false;
+            if(!$user)
+            return ok();
+
+        $token = uniqid(true).uniqid(true).uniqid(true);
+        $token_expire_at =  date('Y-m-d H:i:s',strtotime('now + 1 days'));
+
+        $user->token =$token;
+        $user->token_expire_at=$token_expire_at;
+        $user->save();
+        $url = env('FRONT_URL').'auth/cambiar-password/'.$token;
+
+
+        SendMail::user($user,[
+            'text'=>[
+                'Da click en el siguiente boton para cambiar tu contraseña, el link vence en 24 horas'
+            ],
+            'subject'=>'Solicitud para cambiar contraseña',
+            'url'=>$url,
+            'btn_name'=>'Cambiar contraseña'
+        ]
+        );
+
+        return ok('correo enviado');
+        
+
+    
+
+
+    }
+
+    public function changePassword(Request $request){
+        $data = $request->validate([
+            'password'=>'required|min:8|string|confirmed',
+            'token'=>'required|string',
+        ]);
+
+
+        $user = User::where('token',$data['token'])
+        ->where('token_expire_at','>=',now())
+        ->first()??false;
+
+        if(!$user)
+            return not_found('usuario no encontrado');
+
+
+        $user->password = bcrypt($data['password']);
+        $user->token=null;
+        $user->token_expire_at=null;
+        $user->save();
+
+        return ok('contraseña cambiada correctamente');
     }
 }

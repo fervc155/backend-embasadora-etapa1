@@ -14,7 +14,8 @@ class Token extends Model
     protected $fillable = ['expires_at','jti','revoked'];
 
     public static function decode($token){
-        $tokenParts = explode(".", $token);  
+        $tokenParts = explode(".", $token); 
+
         $tokenHeader = base64_decode($tokenParts[0]);
         $tokenPayload = base64_decode($tokenParts[1]);
             
@@ -28,9 +29,14 @@ class Token extends Model
     public static function check($token){
         $jwt = Token::decode($token);
 
+         if($jwt['payload']==null)
+            return false;
+        
+
         $valid =DB::table('tokens')->where('revoked',0)->where('jti',$jwt['payload']['jti'])->first()??false;
         if($valid)
            return User::with('roles')->where('id',$jwt['payload']['user']['id'])->first();
+       
 
         return false;
 

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Token;
 
-class AuthMiddleware
+class AuthGetMiddleware
 {
     /**
      * Handle an incoming request.
@@ -18,7 +18,7 @@ class AuthMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $accessToken = $request->bearerToken();
+        $accessToken = $request->route('token')??false;
 
 
         if(!$accessToken)

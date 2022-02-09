@@ -19,7 +19,8 @@ class CreateClientsTable extends Migration
             $table->string('email')->unique();
             $table->string('whatsapp')->nullable();
             $table->string('phone')->nullable();
-            $table->string('social_neetworks')->nullable();
+            $table->string('social_networks')->nullable();
+            $table->string('user_id')->nullable()->constrained();
             $table->softdeletes();
             $table->timestamps();
         });

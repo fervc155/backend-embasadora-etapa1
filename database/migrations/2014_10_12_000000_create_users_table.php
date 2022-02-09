@@ -18,7 +18,9 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->integer('rol_id')->index("rol_id");
+            $table->integer('rol_id')->index("rol_id")->nullable();
+            $table->string('token')->nullable();
+            $table->date('token_expire_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

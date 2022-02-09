@@ -15,12 +15,12 @@ class CreateAnswersTable extends Migration
     {
         Schema::create('answers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('client_id')->constrained();
+            $table->foreignId('client_id')->nullable()->constrained();
             $table->foreignId('poll_id')->constrained();
             $table->foreignId('poll_status_id')->constrained();
 
             $table->unsignedBigInteger('interviewed_by');
-            $table->unsignedBigInteger('attend_by');
+            $table->unsignedBigInteger('attend_by')->nullable();
 
             $table->foreign('interviewed_by')->references('id')->on('users');
             $table->foreign('attend_by')->references('id')->on('users');
