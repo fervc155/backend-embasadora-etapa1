@@ -10,7 +10,7 @@ class Client extends Model
 {
     use HasFactory,SoftDeletes;
 
-    protected $fillable = ['name','email','phone','whatsapp','social_networks'];
+    protected $fillable = ['name','email','company','phone','whatsapp','social_networks'];
     protected $hidden = ['deleted_at','created_at','updated_at'];
  //   protected $with=['answers'];
     public function answers(){

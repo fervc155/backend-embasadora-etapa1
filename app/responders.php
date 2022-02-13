@@ -18,6 +18,9 @@ function getResponse( $code, $msg, $data ){
             ->header( 'Content-Type', 'application/json' );
 }
 
+
+
+
 if( ! function_exists( 'ok' ) ){
     function ok( $message='', $data=[] ){
         return getResponse( 200, $message, $data );
@@ -87,6 +90,19 @@ if( ! function_exists( 'not_acceptable' ) ){
 if( ! function_exists( 'conflict' ) ){
     function conflict( $message, $data=[] ){
         return getResponse( 409, $message, $data );
+    }
+}
+
+if( ! function_exists( 'error_validate' ) ){
+    function error_validate( $message="La informacion enviada es invalida", $errors=[] ){
+    $arr[ 'status' ] =false;
+    $arr[ 'code' ] = 422;
+    $arr[ 'msg' ] = $msg ?? '';
+    $arr[ 'errors' ] = $errors;
+    return response()
+            ->json( $arr, 422 )
+            ->header( 'Accept', 'application/json' )
+            ->header( 'Content-Type', 'application/json' );
     }
 }
 

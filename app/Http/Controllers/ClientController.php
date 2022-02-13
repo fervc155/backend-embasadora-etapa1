@@ -28,6 +28,7 @@ class ClientController extends Controller
     {
         $data = $request->validate([
             'name'=>'required|string',
+            'company'=>'required|string',
             'email'=>'required|email|unique:clients,email',
             'whatsapp'=>'nullable|string',
             'phone'=>'nullable|string',
@@ -37,7 +38,7 @@ class ClientController extends Controller
 
         $client = Client::create($data);
 
-        return ok('Cliente creado correctamente',$client);
+        return ok('Cliente creado correctamente',$client->fresh());
     }
 
     /**
@@ -65,6 +66,7 @@ class ClientController extends Controller
     {
         $data= $request->validate([
             'name'=>'required|string',
+            'company'=>'required|string',
             'email'=>'required|email|unique:clients,email,'.$client->id,
             'whatsapp'=>'nullable|string',
             'phone'=>'nullable|string',
@@ -73,6 +75,7 @@ class ClientController extends Controller
         ]);
 
         $client->name = $data['name'];
+        $client->company = $data['company'];
         $client->user_id = $data['user_id']??null;
         $client->email = $data['email'];
         $client->whatsapp = $data['whatsapp'];
@@ -92,7 +95,6 @@ class ClientController extends Controller
     public function destroy(Client $client)
     {
         $client->delete();
-
         return ok('Cliente eliminado correctamente');
     }
 }

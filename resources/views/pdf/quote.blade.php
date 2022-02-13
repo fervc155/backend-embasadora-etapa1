@@ -43,6 +43,10 @@
 				text-align: left;
 			}
 
+			.fwb{
+				font-weight: bold;
+			}
+
 			.row{
 				display: flex;
 				flex-wrap: wrap;
@@ -133,8 +137,9 @@
 			<thead>
 				<tr>
 					<th>Producto</th>
+					<th>Contenido</th>
 					<th>Precio unitario</th>
-					<th>Cantidad</th>
+					<th>Piezas</th>
 					<th>Iva (Si incluye)</th>
 					<th>Subtotal</th>
 				</tr>
@@ -143,7 +148,8 @@
 				<?php $total=0;?>
 				@foreach(json_decode($quote->content) as $product)
 				<tr>
-						<th>{{$product->name}}</th>
+					<th><span class="fwb">{{$product->name}}</span> <p>{{$product->ingredients}}</p></th>
+					<th>{{$product->unit_amount}}{{$product->unit}}</th>
 					<th>{{$product->price}}</th>
 					<th>{{$product->count}}</th>
 					<th>{{$product->iva}}</th>

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
     /**
@@ -73,6 +73,12 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        $auth = Auth::user();
+
+        if($auth->role!='senior')
+            if($auth->id !=$user->id)
+               return forbidden('No es tu usuario');
+ 
         $data = $request->validate([
             'name'=>'required|string',
             'email'=>'required|unique:users,email,'.$user->id,
@@ -81,13 +87,46 @@ class UserController extends Controller
 
         $user->name = $data['name'];
         $user->email = $data['email'];
+
+        if($auth->role=='senior'){
         $user->roles()->detach();
         $user->assignRole($data['role']);
+        }
         $user->save();
 
         return ok('usuario editado correctamente',$user);
 
 
+    }
+
+    public function changePassword(Request $request,User $user){
+        $validate= [
+            'password'=>'required|string|confirmed',
+            'old_password'=>'required|string',
+        ];
+
+        $auth=Auth::user();
+        if($auth->role=='senior'){
+            unset($validate['old_password']);          
+        }else {
+            if($auth->id!=$user->id)
+                return unauthorized('No es tu usuario');
+        }
+
+        $data = $request->validate($validate);
+
+        if($auth->role!='senior'){
+            if(!$auth->checkPassword($data['old_password']))
+                return error_validate(null,[
+                    'old_password'=>['Contraseña incorrecta']
+                ]
+                );
+        }
+
+       $user->password = bcrypt($data['password']);
+       $user->save();
+
+       return ok('Clave cambiada con exito',$user->fresh());
     }
 
     /**

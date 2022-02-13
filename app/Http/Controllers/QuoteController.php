@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{User,Quote};
+use App\Models\{User,Quote,QuoteStatus};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\{Pdf,SendMail};
@@ -19,7 +19,11 @@ class QuoteController extends Controller
      */
     public function index()
     {
-        return ok('',Quote::all());
+        $user = Auth::user();
+        if($user->role=='senior')
+          return ok('',Quote::all());
+
+        return ok('',Quote::where('created_by',$user->id)->get());
     }
 
 
@@ -35,8 +39,11 @@ class QuoteController extends Controller
 
         $data = $request->validate([
             'client_id'=>'nullable|exists:clients,id',
-            'client'=>'required|string',
+            'answer_id'=>'nullable|exists:answers,id',
+            'client_name'=>'required|string',
             'email'=>'required|email',
+            'phone'=>'required',
+            'currency'=>'required|string',
             'content'=>'required|json',
             'start_validity'=>'required|date',
             'end_validity'=>'required|date',
@@ -46,10 +53,8 @@ class QuoteController extends Controller
             'title'=>'required|string'
         ]);
 
-
-
         $data['created_by']= Auth()->user()->id;
-
+        $data['quote_status_id']= 1;
         $quote = Quote::create($data);
 
 
@@ -57,13 +62,18 @@ class QuoteController extends Controller
         $pdf->make('quote',[
             'quote'=>$quote]);
 
+
+
         SendMail::to($data['email'], [
             'subject'=>'Haz recibido una cotizacion',
-            'text'=>['Se ha generado una nueva cotizacion a este correo electronico, descargala de los adjuntos']
+            'text'=>[
+                'Gracias por considerarnos como aliados estratégicos para generar tu marca. Es importante que sepas que en caso de vernos favorecidos, tus productos serán realizados por ing químicos y químicos farmacéuticos y cumpliendo con todas las medidas de Bioseguridad incluyendo irradiación con rayos UV para garantizar inocuidad y libres de COVID.',
+                'Quedamos atentos y a tus servicios'
+]
         ],$pdf);
 
 
-        return ok('Cotizacion creada correctamente',$quote);
+        return ok('Cotizacion creada correctamente',$quote->fresh());
     }
 
     /**
@@ -88,21 +98,14 @@ class QuoteController extends Controller
     public function update(Request $request, Quote $quote)
     {
 
-        return ['bad'];
-            $data = $request->validate([
-                'answers'=>'required|json',
-                'client_id'=>'nullable|exists:users,id',
-                'title'=>'string|required'
-            ]);
+        $data = $request->validate([
+            'client_id'=>'nullable|exists:users,id',
+        ]);
 
-            $data = (object) $data;
+        $quote->client_id = $data['client_id'];
+        $quote->save();
 
-            $quote->answers = $data['answers'];
-            $quote->client_id = $data['client_id'];
-            $quote->title = $data['title'];
-            $quote->save();
-
-            return ok('Cotizacion editada correctamente',$quote);
+        return ok('Cotizacion editada correctamente',$quote->fresh());
 
 
     }
@@ -115,9 +118,17 @@ class QuoteController extends Controller
      */
     public function destroy(Quote $quote)
     {
-        $quote->delete();
-        
+        $quote->delete();      
         return ok('Cotizacion eliminada correctamente');
+    }
+
+    public function status(Request $request,Quote $quote, QuoteStatus $quoteStatus)
+    {
+
+        $quote->quote_status_id = $quoteStatus->id;
+        $quote->save();
+
+        return ok('Status cambiado',$quote->fresh());
     }
 
 

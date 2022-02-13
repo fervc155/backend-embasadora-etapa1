@@ -22,16 +22,14 @@ class AnswerController extends Controller
         $user = Auth::user();
 
         if($user->role=='senior')
-          $answers = Answer::with('client')->orderBy('id','DESC')->get();
+          $answers = Answer::with('client');
         else
           $answers = Answer::with('client')->where(function($query) use($user){
             $query->where('attend_by',$user->id)
             ->orWhere('interviewed_by',$user->id);
-
-          })->orderBy('updated_at','DESC')->get();
+          });
             
-
-        return ok('',$answers);
+        return ok('',$answers->orderBy('updated_at','DESC')->get());
     }
 
     public function indexStatus(PollStatus $pollStatus,$attend=null)
@@ -39,8 +37,12 @@ class AnswerController extends Controller
         $user = Auth::user();
 
 
-          $answers = Answer::with('client')->where('poll_status_id',$pollStatus->id)->orderBy('id','DESC');
+        $answers = Answer::with('client')->where('poll_status_id',$pollStatus->id)->orderBy('id','DESC');
 
+          if($user->role=='hostess'){
+            error_log('hostess');
+            $answers->where('interviewed_by',$user->id);
+          }
 
           if($attend!=null)
           {
@@ -49,6 +51,8 @@ class AnswerController extends Controller
             else
                 $answers->where('attend_by',$attend);
           }
+
+
 
         return ok('',$answers->get());
     }

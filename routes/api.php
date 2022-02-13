@@ -85,6 +85,7 @@ Route::prefix(env('APP_VERSION'))->middleware(['json'])->group(function () {
         Route::post('/', [QuoteController::class, 'store']);
         Route::put('/{quote}', [QuoteController::class, 'update']);
         Route::delete('/{quote}', [QuoteController::class, 'destroy']);
+        Route::post('/{quote}/status/{quoteStatus}', [QuoteController::class, 'status']);
 
     });
 

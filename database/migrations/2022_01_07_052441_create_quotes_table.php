@@ -16,9 +16,11 @@ class CreateQuotesTable extends Migration
         Schema::create('quotes', function (Blueprint $table) {
             $table->id();
             $table->text('header');
-            $table->string('client');
+            $table->string('client_name');
             $table->string('email');
+            $table->string('phone');
             $table->string('title');
+            $table->string('currency');
             $table->text('content');
             $table->date('start_validity');
             $table->date('end_validity');
@@ -26,6 +28,8 @@ class CreateQuotesTable extends Migration
             $table->text('second_footer');
 
             $table->foreignId('client_id')->nullable()->constrained();
+            $table->foreignId('answer_id')->nullable()->constrained();
+            $table->foreignId('quote_status_id')->default(1)->constrained();
     
             $table->unsignedBigInteger('created_by');
             $table->foreign('created_by')->references('id')->on('users');

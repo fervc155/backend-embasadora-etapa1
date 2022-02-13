@@ -11,6 +11,7 @@ use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable implements JWTSubject
 {
