@@ -126,6 +126,7 @@ class QuoteController extends Controller
     {
 
         $quote->quote_status_id = $quoteStatus->id;
+        $quote->status_changed= date('Y-m-d');
         $quote->save();
 
         return ok('Status cambiado',$quote->fresh());

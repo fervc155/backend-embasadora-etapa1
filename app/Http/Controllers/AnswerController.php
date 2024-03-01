@@ -141,6 +141,7 @@ class AnswerController extends Controller
         $answer->poll_status_id = PollStatus::whereName( $data['poll_status'])->first()->id;
         $answer->attend_by = $data['attend_by']??null;
         $answer->client_id = $data['client_id']??null;
+        $answer->status_changed=date('Y-m-d');
         $answer->save();
 
         return ok('Cuestionario editado correctamente',$answer);

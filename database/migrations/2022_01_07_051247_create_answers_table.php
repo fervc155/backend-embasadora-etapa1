@@ -27,6 +27,7 @@ class CreateAnswersTable extends Migration
 
             $table->text('answers');
             $table->softdeletes();
+            $table->date('status_changed')->nullable();
             $table->timestamps();
         });
     }

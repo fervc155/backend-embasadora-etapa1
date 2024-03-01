@@ -19,7 +19,7 @@ class UserController extends Controller
             $q->where("name",$role);
           })->get());
            
-        return ok('',User::all());
+        return ok('',$this->setMany(User::all()));
     }
 
 
@@ -36,9 +36,14 @@ class UserController extends Controller
             'email'=>'required|unique:users,email',
             'password'=>'required|string|confirmed',
             'role'=>'required|exists:roles,name',
+            'user_id'=>'nullable|exists:users,id',
         ]);
 
         $role = $data['role'];
+
+        if($role!='hostess')
+            unset($data['user_id']);
+
         unset($data['role']);
         $data['password']= bcrypt($data['password']);
 
@@ -60,7 +65,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return ok('',$user);
+        return ok('',$user->withEmployees());
     }
 
 
@@ -83,7 +88,15 @@ class UserController extends Controller
             'name'=>'required|string',
             'email'=>'required|unique:users,email,'.$user->id,
             'role'=>'required|exists:roles,name',
+            'user_id'=>'nullable|exists:users,id',
+
         ]);
+
+
+        if($data['role']=='hostess')
+            $user->user_id=$data['user_id']??null;
+        else
+            $user->user_id=null;
 
         $user->name = $data['name'];
         $user->email = $data['email'];
@@ -141,4 +154,15 @@ class UserController extends Controller
 
         return ok('Usuario eliminado correctamente');
     }
+
+
+    private function setMany($users){
+        $allUsers =User::all();
+        
+        foreach($users as &$user){
+            $user->boss = $allUsers->where('id',$user->user_id)->first()??null;
+            $user->employees =$allUsers->where('user_id',$user->id)->values();
+        }
+        return $users;
+    } 
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\{User,SendMail};
 use Illuminate\Http\Request;
 use DB;
+use Auth;
 class AuthController extends Controller
 {
     public function register(Request $request)
@@ -76,7 +77,7 @@ class AuthController extends Controller
      */
     public function refresh(Request $request)
     {
-        $user = $request->user;
+        $user = Auth::user();
         $token = auth()
             ->claims([
                 'user'=>$user
@@ -86,7 +87,7 @@ class AuthController extends Controller
             
         $user->saveToken($token);
 
-        return ok('Token refrescado correctamente',$user_login_token);
+        return ok('Token refrescado correctamente',$token);
     }
 
     public function check(Request $request){

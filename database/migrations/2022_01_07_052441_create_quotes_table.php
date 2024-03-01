@@ -26,6 +26,7 @@ class CreateQuotesTable extends Migration
             $table->date('end_validity');
             $table->text('first_footer');
             $table->text('second_footer');
+            $table->date('status_changed')->nullable();
 
             $table->foreignId('client_id')->nullable()->constrained();
             $table->foreignId('answer_id')->nullable()->constrained();

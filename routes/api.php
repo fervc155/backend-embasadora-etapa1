@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{AuthController,PermissionsController,RoleController,ClientController,PollStatusController,PollController,QuoteController,UserController,AnswerController};
+use App\Http\Controllers\{AuthController,PermissionsController,RoleController,ClientController,PollStatusController,PollController,QuoteController,UserController,AnswerController,AppointmentController,ReportController};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,9 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix(env('APP_VERSION'))->middleware(['json'])->group(function () {
 
-                Route::get('/ver/{quote}/download', [QuoteController::class, 'download']);
 
-    Route::get('/quotes/{quote}/download/{token}', [QuoteController::class, 'download'])->middleware('auth-get');
 
 
     Route::prefix('auth')->group(function(){
@@ -86,6 +84,7 @@ Route::prefix(env('APP_VERSION'))->middleware(['json'])->group(function () {
         Route::put('/{quote}', [QuoteController::class, 'update']);
         Route::delete('/{quote}', [QuoteController::class, 'destroy']);
         Route::post('/{quote}/status/{quoteStatus}', [QuoteController::class, 'status']);
+        Route::get('/{quote}/download', [QuoteController::class, 'download']);
 
     });
 
@@ -97,6 +96,22 @@ Route::prefix(env('APP_VERSION'))->middleware(['json'])->group(function () {
         Route::put('/{user}', [UserController::class, 'update']);
         Route::put('/{user}/change-password', [UserController::class, 'changePassword']);
         Route::delete('/{user}', [UserController::class, 'destroy']);
+
+    });
+
+    Route::prefix('appointments')->group(function () {
+        Route::get('/', [AppointmentController::class, 'index']);
+        Route::get('/{appointment}', [AppointmentController::class, 'show']);
+        Route::get('/user/{user}', [AppointmentController::class, 'today']);
+        Route::post('/', [AppointmentController::class, 'store']);
+        Route::delete('/{appointment}', [AppointmentController::class, 'destroy']);
+        Route::post('/times/{user}', [AppointmentController::class, 'times']);
+
+    });
+    Route::prefix('reports')->group(function () {
+        Route::post('/first', [ReportController::class, 'first']);
+        Route::post('/first-download', [ReportController::class, 'firstDownload']);
+
 
     });
 

@@ -20,7 +20,7 @@ class User extends Authenticatable implements JWTSubject
     public $incrementing = false;
     protected $keyType = 'uuid';
     protected $appends=['role'];
-    protected $with=['roles'];
+    protected $with=['roles',];
 
 
     /**
@@ -32,7 +32,8 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
-        'rol_id'
+        'rol_id',
+        'user_id',
     ];
 
     /**
@@ -110,9 +111,17 @@ class User extends Authenticatable implements JWTSubject
     }
 
 
-  
-
     public function answersInterviewed(){
-        return $this->belonsTo(App\Models\Answer::class,'id','interviewed_by');
+        return $this->belongsTo(App\Models\Answer::class,'id','interviewed_by');
     }
+
+    public function withEmployees(){
+        $users =User::where('user_id',$this->id)->orWhere('id',$this->user_id)->get();
+
+        $this->boss = $users->where('id',$this->user_id)->first()??null;
+        $this->employees =$users->where('user_id',$this->id)->values();
+
+        return $this;
+    }
+
 }

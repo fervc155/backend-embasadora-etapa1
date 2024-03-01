@@ -19,8 +19,6 @@ class AuthMiddleware
     public function handle(Request $request, Closure $next)
     {
         $accessToken = $request->bearerToken();
-
-
         if(!$accessToken)
             return bad_request('Se requiere un token de acceso');
 
@@ -33,7 +31,7 @@ class AuthMiddleware
             $request->user= $user;
             return $next($request);
         }
-        return unauthorized('Token invalido');
+        return expired('Token invalido');
 
     }
 }

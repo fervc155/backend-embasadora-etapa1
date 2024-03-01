@@ -53,7 +53,7 @@ class ClientController extends Controller
     }
     public function showWithAnswers(Client $client)
     {
-        return ok('',Client::with('answers')->whereId($client->id)->first());
+        return ok('',Client::with(['answers','quotes'])->whereId($client->id)->first());
     }
     /**
      * Update the specified resource in storage.

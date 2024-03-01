@@ -93,6 +93,12 @@ if( ! function_exists( 'conflict' ) ){
     }
 }
 
+if( ! function_exists( 'expired' ) ){
+    function expired( $message, $data=[] ){
+        return getResponse( 419, $message, $data );
+    }
+}
+
 if( ! function_exists( 'error_validate' ) ){
     function error_validate( $message="La informacion enviada es invalida", $errors=[] ){
     $arr[ 'status' ] =false;

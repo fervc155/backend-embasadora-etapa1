@@ -80,69 +80,27 @@ class PollsSeeder extends Seeder
         "content" => array(
             "facebook_antiquity" => array(
                 "label" => "Antigüedad de la empresa en años",
-                "type" => "radio",
-                "options" => array(
-                    "0" => 1,
-                    "1" => 2,
-                    "2" => 3,
-                    "3" => 4,
-                    "4" => 5
-                )
+                "type" => "number",
             ),
             "reputation" => array(
                 "label" => "Reputacion",
-                "type" => "radio",
-                "options" => array(
-                    "0" => 1,
-                    "1" => 2,
-                    "2" => 3,
-                    "3" => 4,
-                    "4" => 5
-                )
+                "type" => "text",
             ),
             "followers" => array(
                 "label" => "Numero de seguidores",
-                "type" => "radio",
-                "options" => array(
-                    "0" => 1,
-                    "1" => 2,
-                    "2" => 3,
-                    "3" => 4,
-                    "4" => 5
-                )
+                "type" => "text",
             ),
             "products_amount" => array(
                 "label" => "Numero de productos",
-                "type" => "radio",
-                "options" => array(
-                    "0" => 1,
-                    "1" => 2,
-                    "2" => 3,
-                    "3" => 4,
-                    "4" => 5
-                )
+                "type" => "text",
             ),
             "engagment" => array(
                 "label" => "Engagment",
-                "type" => "radio",
-                "options" => array(
-                    "0" => 1,
-                    "1" => 2,
-                    "2" => 3,
-                    "3" => 4,
-                    "4" => 5
-                )
+                "type" => "text",
             ),
             "imagen" => array(
                 "label" => "Imagen",
-                "type" => "radio",
-                "options" => array(
-                    "0" => 1,
-                    "1" => 2,
-                    "2" => 3,
-                    "3" => 4,
-                    "4" => 5
-                )
+                "type" => "text",
             ),
             "facebook_comments" => array(
                 "label" => "Comentarios despues de revisar el facebook del cliente",
@@ -156,69 +114,27 @@ class PollsSeeder extends Seeder
         "content" => array(
             "reputation" => array(
                 "label" => "Reputacion",
-                "type" => "radio",
-                "options" => array(
-                    "0" => 1,
-                    "1" => 2,
-                    "2" => 3,
-                    "3" => 4,
-                    "4" => 5
-                )
+                "type" => "text",
             ),
             "followers" => array(
                 "label" => "Numero de seguidores",
-                "type" => "radio",
-                "options" => array(
-                    "0" => 1,
-                    "1" => 2,
-                    "2" => 3,
-                    "3" => 4,
-                    "4" => 5
-                )
+                "type" => "text",
             ),
             "products_amount" => array(
                 "label" => "Numero de productos",
-                "type" => "radio",
-                "options" => array(
-                    "0" => 1,
-                    "1" => 2,
-                    "2" => 3,
-                    "3" => 4,
-                    "4" => 5
-                )
+                "type" => "text",
             ),
             "engagment" => array(
                 "label" => "Engagment",
-                "type" => "radio",
-                "options" => array(
-                    "0" => 1,
-                    "1" => 2,
-                    "2" => 3,
-                    "3" => 4,
-                    "4" => 5
-                )
+                "type" => "text",
             ),
             "imagen" => array(
                 "label" => "Imagen",
-                "type" => "radio",
-                "options" => array(
-                    "0" => 1,
-                    "1" => 2,
-                    "2" => 3,
-                    "3" => 4,
-                    "4" => 5
-                )
+                "type" => "text",
             ),
             "first_post_antiquity" => array(
                 "label" => "Antigüedad de la primera publicacion",
-                "type" => "radio",
-                "options" => array(
-                    "0" => 1,
-                    "1" => 2,
-                    "2" => 3,
-                    "3" => 4,
-                    "4" => 5
-                )
+                "type" => "text",
             ),
             "instagram_comments" => array(
                 "label" => "Comentarios despues de revisar el instagram del cliente",
@@ -319,80 +235,31 @@ class PollsSeeder extends Seeder
         "content" => array(
             "wants_ads" => array(
                 "label" => "Campañas en redes sociales",
-                "type" => "check",
-                "options" => array(
-                    "0" => 1,
-                    "1" => 2,
-                    "2" => 3,
-                    "3" => 4,
-                    "4" => 5
-                )
+                "type" => "text",
             ),
             "wants_adworks" => array(
                 "label" => "Campañas de google ads",
-                "type" => "check",
-                "options" => array(
-                    "0" => 1,
-                    "1" => 2,
-                    "2" => 3,
-                    "3" => 4,
-                    "4" => 5
-                )
+                "type" => "text",
             ),
             "wants_design" => array(
                 "label" => "Diseño publicitario",
-                "type" => "check",
-                "options" => array(
-                    "0" => 1,
-                    "1" => 2,
-                    "2" => 3,
-                    "3" => 4,
-                    "4" => 5
-                )
+                "type" => "text",
             ),
             "wants_finder" => array(
                 "label" => "Estudio de productos mas buscados en la red",
-                "type" => "check",
-                "options" => array(
-                    "0" => 1,
-                    "1" => 2,
-                    "2" => 3,
-                    "3" => 4,
-                    "4" => 5
-                )
+                "type" => "text",
             ),
             "wants_lawyer" => array(
                 "label" => "Asesoria juridica",
-                "type" => "check",
-                "options" => array(
-                    "0" => 1,
-                    "1" => 2,
-                    "2" => 3,
-                    "3" => 4,
-                    "4" => 5
-                )
+                "type" => "text",
             ),
             "wants_financial" => array(
                 "label" => "Asesoria financiera o contable",
-                "type" => "check",
-                "options" => array(
-                    "0" => 1,
-                    "1" => 2,
-                    "2" => 3,
-                    "3" => 4,
-                    "4" => 5
-                )
+                "type" => "text",
             ),
             "wants_ecommerce" => array(
                 "label" => "Asesoria para abrir tiendas en linea",
-                "type" => "check",
-                "options" => array(
-                    "0" => 1,
-                    "1" => 2,
-                    "2" => 3,
-                    "3" => 4,
-                    "4" => 5
-                )
+                "type" => "text",
             ),
             "services_comments" => array(
                 "label" => "Comentarios",
@@ -406,33 +273,15 @@ class PollsSeeder extends Seeder
         "content" => array(
             "sells_amount" => array(
                 "label" => "¿Cuántas piezas vende al mes?",
-                "type" => "check",
-                "options" => array(
-                    "0" => "menos de 100",
-                    "1" => "menos de 500",
-                    "2" => "menos de 1000",
-                    "3" => "mas de 1000"
-                )
+                "type" => "text",
             ),
             "wants_amount" => array(
                 "label" => "¿En cuantas piezas esta interesado?",
-                "type" => "check",
-                "options" => array(
-                    "0" => "menos de 100",
-                    "1" => "menos de 500",
-                    "2" => "menos de 1000",
-                    "3" => "mas de 1000"
-                )
+                "type" => "text",
             ),
             "buy_last_month" => array(
                 "label" => "¿Cuantas piezas compro el mes pasado?",
-                "type" => "check",
-                "options" => array(
-                    "0" => "menos de 100",
-                    "1" => "menos de 500",
-                    "2" => "menos de 1000",
-                    "3" => "mas de 1000"
-                )
+                "type" => "text",
             ),
             "services_comments" => array(
                 "label" => "Comentarios, solicitar información de a quien le compra y a que precio compra y ofrecer GARANTIA FORMULABS",
